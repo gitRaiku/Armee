@@ -2,6 +2,7 @@
 #define DICT_H
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 #include <fcntl.h>
@@ -32,7 +33,6 @@ struct wikte {
 extern uint32_t entrl;
 extern struct wikte *__restrict entries;
 
-void load_dict();
-
+void load_dict(FILE *__restrict lfile);
 
 #endif

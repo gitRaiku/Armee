@@ -13,7 +13,7 @@ MOD_DIR  = .mod
 # Options
 CC       = gcc
 CCFLAGS  = -ggdb3 -Og \
-					 -Wall -march=native -mtune=native -fmodulo-sched \
+					 -Wall -Wpedantic -march=native -mtune=native -fmodulo-sched \
 					 -fstack-clash-protection -pthread \
 					 -pipe -fkeep-inline-functions \
 					 -pthread -D_FORTIFY_SOURCE=2

@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "dict.h"
+
 #include "../Libs/socket.h"
 #include "../Libs/log.h"
 

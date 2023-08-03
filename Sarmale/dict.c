@@ -29,6 +29,16 @@ char *__restrict reads(int32_t d, uint32_t l) {
   return c;
 }
 
+void I_HATE_GCC() {
+  fprintf(stdout, "Funny part! %p %p\n", entries[11].senses[0].glosses, &entries[11].senses[1].linkl);
+  fprintf(stdout, "Funny part! %p %p\n", entries[11].senses[0].glosses, &entries[11].senses[1].linkl);
+  fprintf(stdout, "Funny part! %p %p\n", entries[11].senses[0].glosses, &entries[11].senses[1].linkl);
+  fprintf(stdout, "Funny part! %p %p\n", entries[11].senses[0].glosses, &entries[11].senses[1].linkl);
+  fprintf(stdout, "Funny part! %p %p\n", entries[11].senses[0].glosses, &entries[11].senses[1].linkl);
+  fprintf(stdout, "Funny part! %p %p\n", entries[11].senses[0].glosses, &entries[11].senses[1].linkl);
+  fprintf(stdout, "Funny part! %p %p\n", entries[11].senses[0].glosses, &entries[11].senses[1].linkl);
+}
+
 void load_dict(FILE *__restrict lfile) {
   log_file = lfile;
   int32_t d = open("rdict", O_RDONLY);
@@ -69,20 +79,24 @@ void load_dict(FILE *__restrict lfile) {
 
     entries[i].soundl = glen(d); 
     entries[i].sounds = malloc(sizeof(char *__restrict) * entries[i]. soundl); 
-    for(j = 0; j < entries[i]. soundl; ++(j)) { 
+    for(j = 0; j < entries[i]. soundl; ++j) { 
       entries[i].sounds[j] = reads(d, glen(d));
-    };
+    }
     entries[i].sensel = glen(d); 
     entries[i].senses = malloc(sizeof(char *__restrict) * entries[i].sensel); 
-    for(j = 0; j < entries[i]. sensel; ++(j)) { 
+    for(j = 0; j < entries[i].sensel; ++j) { 
       entries[i].senses[j].glossel = glen(d);
       entries[i].senses[j].glosses = malloc(sizeof(char *__restrict) * entries[i]. senses[j].glossel);
-      for(k = 0; k < entries[i]. senses[j].glossel; ++(k)) {
+      for(k = 0; k < entries[i]. senses[j].glossel; ++k) {
         entries[i].senses[j].glosses[k] = reads(d, glen(d));
-      };
+      }
       fprintf(stdout, "ss: %p\n", entries[i].senses[0].glosses[0]);
+      if (i == 11 && j == 1) {
+        I_HATE_GCC();
+      }
       /// TODO: i == 11; j = 1 -> WHAT THE FUCK
       entries[i].senses[j].linkl = glen(d);
+      fprintf(stdout, "ss: %p\n", entries[i].senses[0].glosses[0]);
       entries[i].senses[j].links = malloc(sizeof(char *__restrict) * entries[i]. senses[j].linkl);
       for(k = 0; k < entries[i]. senses[j].linkl; ++(k)) {
         entries[i].senses[j].links[k] = reads(d, glen(d));
