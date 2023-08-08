@@ -22,6 +22,7 @@ void help() {
   exit(1);
 }
 
+struct rsocket s;
 int32_t client_sock;
 int32_t wx, wy;
 char *text;
@@ -250,10 +251,18 @@ void handle_input(char ch) {
         werase(se.w);
         box(se.w, 0, 0);
         mvwaddnstr(se.w, 15, 1, selection, selt);
+        struct rpacket p = {0};
+        p.func = 0x08;
+        p.len = selt;
+        p.data = malloc(selt);
+        memcpy(p.data, selection, selt);
+        send_packet(s, p);
         get_results();
         cp.sel = 0;
         cp.pos += cp.len;
         cp.len = 0;
+
+
         return;
     }
   } else {
@@ -294,7 +303,7 @@ int main(int argc, char **argv) {
   log_file = stderr;
   set_logging_level(0);
 
-  struct rsocket s = setup_server_connection(log_file, "armee", "sarmale");
+  s = setup_server_connection(log_file, "armee", "sarmale");
 
   text = strdup(argv[1]);
   textl = strlen(text);

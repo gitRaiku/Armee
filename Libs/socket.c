@@ -127,41 +127,34 @@ void shutdown_server_connection(struct rsocket c) {
   free(c.path);
 }
 
-void make_empty_packet(char *buf, uint32_t *bl) {
-  buf[0] = 
-  buf[1] = 
-  buf[2] = 
-  buf[3] = 0x00;
-  *bl = 4;
+struct rpacket make_empty_packet() {
+  struct rpacket p = {0};
+  return p;
+}
+
+struct rpacket make_error_packet() {
+  struct rpacket p = {0};
+  p.func = RFUNC_ERR;
+  return p;
 }
 
 struct rpacket get_packet(FILE *__restrict log_file, struct rsocket c) {
-  char buf[1024];
-  int32_t bytesRec = recv(c.sock, buf, sizeof(buf), 0);
-  logg(0, log_file, "Got bytes: %u\n", bytesRec);
-
-  if (bytesRec == 0) {
-    struct rpacket emptyPacket = {0};
-    return emptyPacket;
-  }
-
-  if (bytesRec == -1) {
-    logg(5, log_file, "Error recieving!");
-    close(c.sock);
-    struct rpacket errorPacket = {0};
-    errorPacket.func = RFUNC_ERR;
-    return errorPacket;
-  }
-  buf[bytesRec] = '\0';
-
-  logg(0, log_file, "%hhu %hhu %hhu [%s]\n", buf[0], buf[1], buf[2], buf + 3);
-
   struct rpacket p = {0};
-  p.func = (uint8_t)buf[0];
-  p.len = (uint16_t)buf[1] << 8 | (uint16_t)buf[2];
+
+  if ((recv(c.sock, &p.func, 1, 0)) == -1) { logg(5, log_file, "Error recieving function! %m"); close(c.sock); return make_error_packet(); }
+  fprintf(stdout, "Got function: %x\n", p.func);
+  if ((recv(c.sock, &p.len, 2, 0)) == -1) { logg(5, log_file, "Error recieving length! %m"); close(c.sock); return make_error_packet(); }
+  fprintf(stdout, "Got len: %x\n", p.len);
   p.data = malloc(p.len + 1);
-  memcpy(p.data, buf + 3, p.len);
+  if ((recv(c.sock, p.data, p.len, 0)) == -1) { logg(5, log_file, "Error recieving data! %m"); close(c.sock); return make_error_packet(); }
   p.data[p.len] = '\0';
+  fprintf(stdout, "Got data: %s\n", p.data);
 
   return p;
+}
+
+void send_packet(struct rsocket c, struct rpacket p) {
+  send(c.sock, &p.func, 1, 0);
+  send(c.sock, &p.len, 2, 0);
+  send(c.sock, p.data, p.len, 0);
 }

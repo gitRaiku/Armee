@@ -3,6 +3,13 @@
 #define RFUNC_NONE 0
 #define RFUNC_ERR 0xFF
 
+//
+//  0x02 0x00 0x05 0x42 0x75 0x6E 0xC5 0x21 
+//  ^^^^ ^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^
+//    |      |                 |
+// Function Length           Data
+//
+
 struct rpacket {
   uint8_t func;
   uint16_t len;
@@ -21,8 +28,10 @@ void close_connection(struct rsocket c);
 
 struct rsocket setup_server_connection(FILE *__restrict log_file, char *__restrict name, char *__restrict serverName);
 void shutdown_server_connection(struct rsocket c);
-void make_empty_packet(char *buf, uint32_t *bl);
+struct rpacket make_empty_packet();
+struct rpacket make_error_packet();
 struct rpacket get_packet(FILE *__restrict log_file, struct rsocket c);
+void send_packet(struct rsocket c, struct rpacket p);
 
 #define SOCKET_H
 #endif

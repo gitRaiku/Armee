@@ -14,25 +14,33 @@
 // links = ["einem", "einem#German"], ["'n", "'n#German"]
 // glosses = ['', '']
 
+typedef uint32_t strp;
+
 struct sense {
   uint16_t glossel;
-  char *__restrict *__restrict glosses;
+  strp *__restrict glosses;
   uint16_t linkl;
-  char *__restrict *__restrict links;
+  strp *__restrict links;
 };
 
 struct wikte {
-  char *__restrict word;
-  char *__restrict pos;
+  uint64_t whash;
+  strp word;
+  strp pos;
   uint16_t soundl;
-  char *__restrict *__restrict sounds;
+  strp *__restrict sounds;
   uint16_t sensel;
   struct sense *__restrict senses;
 };
+
+#define g(x) (strings + (x))
+#define STRINGS_SIZE 33969860
+extern char *__restrict strings;
 
 extern uint32_t entrl;
 extern struct wikte *__restrict entries;
 
 void load_dict(FILE *__restrict lfile);
+void unload_dict();
 
 #endif
