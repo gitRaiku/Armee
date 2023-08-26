@@ -39,7 +39,10 @@ build: libs $(BIN_DIR) $(BIN_DIR)/$(TARGET)
 $(BIN_DIR):
 	mkdir -p $@
 
-$(C_OBJ): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
+$(OBJ_DIR):
+	mkdir -p $@
+
+$(C_OBJ): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(OBJ_DIR)
 	@mkdir -p $(@D)
 	$(CC) -c $(CCFLAGS) $< -o $@
 
@@ -56,7 +59,7 @@ debug: build
 	$(DEBUGGER) $(BIN_DIR)/$(TARGET)
 
 clean:
-	rm -f $(C_OBJ)
+	rm -rf $(OBJ_DIR)
 	rm -f $(MOD)
 
 remove: clean

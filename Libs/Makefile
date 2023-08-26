@@ -20,10 +20,10 @@ MOD    = $(wildcard $(MOD_DIR)/*.mod)
 $(OBJ_DIR):
 	mkdir -p $@
 
-$(C_OBJ): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
+$(C_OBJ): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(OBJ_DIR) 
 	$(CC) -c $(CCFLAGS) $< -o $@
 
 build: $(C_OBJ)
 
 clean:
-	rm $(OBJ_DIR)/*.o
+	rm -rf $(OBJ_DIR)
