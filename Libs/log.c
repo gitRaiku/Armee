@@ -33,7 +33,7 @@ void logg(uint8_t severity, FILE *__restrict log_file, const char *format, ...) 
 void hexprint(FILE *__restrict log_file, char *buf, uint32_t l) {
   int32_t i;
   for(i = 0; i < l; ++i) {
-    fprintf(log_file, "0x%x ", buf[i]);
+    fprintf(log_file, "0x%hhX ", (uint8_t)buf[i]);
   }
   fputc('\n', log_file);
 }

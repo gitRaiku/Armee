@@ -29,7 +29,10 @@ C_SRC  = $(wildcard $(SRC_DIR)/*.c $(SRC_DIR)/*/*.c)
 C_OBJ  = $(C_SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 L_OBJ  = $(wildcard $(LIB_DIR)/$(OBJ_DIR)/*.o)
 
-build: $(BIN_DIR) $(BIN_DIR)/$(TARGET)
+libs:
+	make -C ../Libs
+
+build: libs $(BIN_DIR) $(BIN_DIR)/$(TARGET)
 
 $(BIN_DIR):
 	mkdir -p $@
@@ -45,7 +48,9 @@ $(BIN_DIR)/$(TARGET): $(C_OBJ)
 	$(LINKER) $(L_OBJ) $(C_OBJ) $(LFLAGS) -o $@
 
 
-STRING = "Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht Der Alte würfelt nicht"
+STRING = "der Alte würfelt Würfel nicht br̩no"
+
+# STRING = "derr"
 run: build
 	@./$(BIN_DIR)/$(TARGET) $(STRING) ""
 

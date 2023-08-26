@@ -142,13 +142,13 @@ struct rpacket get_packet(FILE *__restrict log_file, struct rsocket c) {
   struct rpacket p = {0};
 
   if ((recv(c.sock, &p.func, 1, 0)) == -1) { logg(5, log_file, "Error recieving function! %m"); close(c.sock); return make_error_packet(); }
-  fprintf(stdout, "Got function: %x\n", p.func);
+  //fprintf(stdout, "Got function: %x\n", p.func);
   if ((recv(c.sock, &p.len, 2, 0)) == -1) { logg(5, log_file, "Error recieving length! %m"); close(c.sock); return make_error_packet(); }
-  fprintf(stdout, "Got len: %x\n", p.len);
+  //fprintf(stdout, "Got len: %x\n", p.len);
   p.data = malloc(p.len + 1);
   if ((recv(c.sock, p.data, p.len, 0)) == -1) { logg(5, log_file, "Error recieving data! %m"); close(c.sock); return make_error_packet(); }
   p.data[p.len] = '\0';
-  fprintf(stdout, "Got data: %s\n", p.data);
+  //fprintf(stdout, "Got data: %s\n", p.data);
 
   return p;
 }

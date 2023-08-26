@@ -31,7 +31,10 @@ C_OBJ  = $(C_SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 L_OBJ  = $(wildcard $(LIB_DIR)/$(OBJ_DIR)/*.o)
 MOD    = $(wildcard $(MOD_DIR)/*.mod)
 
-build: $(BIN_DIR) $(BIN_DIR)/$(TARGET)
+libs:
+	make -C ../Libs
+
+build: libs $(BIN_DIR) $(BIN_DIR)/$(TARGET)
 
 $(BIN_DIR):
 	mkdir -p $@
