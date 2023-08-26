@@ -654,6 +654,7 @@ void rscr() {
   if (ents) {
     show_entries();
   }
+  highlight_selection();
   update_outp();
   update_panels();
   doupdate();
