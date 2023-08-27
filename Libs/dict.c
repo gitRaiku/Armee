@@ -74,16 +74,17 @@ strp reads(uint16_t l) {
 
 void print_entry(uint32_t i) {
   int32_t j, k;
-  logg(0, log_file, "word: %s(%lu); pos: %s\n", g(entries[i].word), entries[i].hash, g(entries[i].pos));
+  logg(0, log_file, "Entry %u", i);
+  logg(0, log_file, "word: %s(%lu); pos: %s", g(entries[i].word), entries[i].hash, g(entries[i].pos));
   for(j = 0; j < entries[i].soundl; ++j) {
-    logg(0, log_file, "\tsound: %s\n", g(entries[i].sounds[j]));
+    logg(0, log_file, "\tsound: %s", g(entries[i].sounds[j]));
   }
   for(j = 0; j < entries[i].sensel; ++j) {
     for(k = 0; k < entries[i].senses[j].glossel; ++k) {
-      logg(0, log_file, "\tgloss: %s\n", g(entries[i].senses[j].glosses[k]));
+      logg(0, log_file, "\tgloss: %s", g(entries[i].senses[j].glosses[k]));
     }
     for(k = 0; k < entries[i].senses[j].linkl; ++k) {
-      logg(0, log_file, "\tlink: %s\n", g(entries[i].senses[j].links[k]));
+      logg(0, log_file, "\tlink: %s", g(entries[i].senses[j].links[k]));
     }
   }
 }
@@ -210,14 +211,11 @@ uint32_t search_hash(uint64_t hash) {
   int32_t answer = lbound;
   while (lbound <= ubound) {
     cpos = (ubound + lbound) / 2;
-    if (entries[cpos].hash <= hash) {
+    if (entries[cpos].hash >= hash) {
       answer = cpos;
-      if (entries[cpos].hash == hash) {
-        break;
-      }
-      lbound = cpos + 1;
-    } else {
       ubound = cpos - 1;
+    } else {
+      lbound = cpos + 1;
     }
   }
   return answer;

@@ -115,16 +115,16 @@ struct rpacket deepl_word(char *word, uint32_t wl) {
 }
 
 struct rpacket parse_packet(struct rpacket p) {
-  logg(0, log_file, "Got new packet! %u %u %s\n", p.func, p.len, p.data);
+  logg(0, log_file, "Got new packet! %u %u %s", p.func, p.len, p.data);
   switch (p.func) {
     case FUNC_WORD:
-      logg(0, log_file, "Search word %s\n", p.data);
+      logg(0, log_file, "Search word %s", p.data);
       return search_word(p.data, p.len);
     case FUNC_DEEPL:
-      logg(0, log_file, "Deepl word %s\n", p.data);
+      logg(0, log_file, "Deepl word %s", p.data);
       return deepl_word(p.data, p.len);
     default:
-      logg(1, log_file, "Got broken packet! Sending empty packet pack!\n");
+      logg(1, log_file, "Got broken packet! Sending empty packet pack!");
       hexprint(log_file, p.data, p.len);
       return make_empty_packet();
   }
@@ -132,17 +132,23 @@ struct rpacket parse_packet(struct rpacket p) {
 
 uint8_t run = 1;
 int main(void) {
-  log_file = fopen("/var/log/sarmale.log", "a");
-  if (log_file == NULL) {
-    logg(10, stderr, "Could not open the log file! [%m]");
-    exit(1);
+  if (1) {
+    log_file = fopen("/var/log/sarmale.log", "a");
+    if (log_file == NULL) {
+      logg(10, stderr, "Could not open the log file! [%m]");
+      exit(1);
+    }
+  } else {
+    log_file = stdout;
   }
-  //log_file = stdout;
-  set_logging_level(10);
+  set_logging_level(0);
   set_logging_string("Sarmale");
 
   load_dict(log_file);
   /*
+  print_entry(113970);
+  print_entry(113971);
+  print_entry(113972);
   char a[] = "Würfel";
   search_word(a, strlen(a));
   */
