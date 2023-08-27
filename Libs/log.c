@@ -5,17 +5,25 @@ uint8_t logging_level = 2;
 time_t t;      /* Declared here not to be allocated every call or sth */
 struct tm *ct; /* Idk */
 char time_string[64];
+char *logStr;
+
+void set_logging_string(char *s) {
+  logStr = s;
+}
 
 void set_logging_level(uint8_t level) {
   logging_level = level;
 }
 
 void print_begining(uint8_t severity, FILE *__restrict log_file) {
+  if (logStr == NULL) {
+    logStr = "";
+  }
   t = time(NULL);
   ct = localtime(&t);
   
   strftime(time_string, sizeof(time_string), "%c", ct);
-  fprintf(log_file, "[%s] %s %2u: ", time_string, SARMALE_LOG_NAME, severity);
+  fprintf(log_file, "[%s] %s %2u: ", time_string, logStr, severity);
 }
 
 void logg(uint8_t severity, FILE *__restrict log_file, const char *format, ...) {

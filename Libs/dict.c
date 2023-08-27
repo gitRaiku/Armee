@@ -105,7 +105,7 @@ uint8_t wdif(uint32_t x, uint32_t y) {
 
 void load_dict(FILE *__restrict lfile) {
   log_file = lfile;
-  d = open("rdict", O_RDONLY);
+  d = open("/usr/share/dicts/rgdict", O_RDONLY);
   if (d < 0) {
     logg(10, log_file, "Could not open rdict! %m");
     exit(1);

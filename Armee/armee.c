@@ -246,7 +246,6 @@ void show_entries() {
   werase(se.w);
   box(se.w, 0, 0);
   int32_t i, j, k;
-  endwin();
   if (ents) {
     for(i = 0; i < entsl; ++i) {
       del_panel(ents[i].p);
@@ -526,7 +525,6 @@ void handle_input(char ch) {
           return;
         case ' ':
         case '\n':
-          endwin();
           get_selection();
           selection[selt] = '\0';
           werase(se.w);
@@ -770,12 +768,13 @@ void to_anki() {
     "\"version\": 6,"
     "\"params\": {"
       "\"note\": {"
-        "\"deckName\": \"Sentence Mining\","
-        "\"modelName\": \"SentenceMining\","
+        "\"deckName\": \"Kill Myself\","
+        "\"modelName\": \"Kms\","
         "\"fields\": {"
-          "\"Sentence\": \"%s\","
-          "\"Words\": \"%s\","
-          "\"Audio\": \"\""
+          "\"Deutsch\": \"%s\","
+          "\"English\": \"%s\","
+          "\"Audio\": \"\","
+          "\"Pos\": \"\""
         "},"
         "\"options\": {"
           "\"allowDuplicate\": false,"
@@ -803,12 +802,13 @@ void to_anki() {
     "\"version\": 6,"
     "\"params\": {"
       "\"note\": {"
-        "\"deckName\": \"Sentence Mining\","
-        "\"modelName\": \"SentenceMining\","
+        "\"deckName\": \"Kill Myself\","
+        "\"modelName\": \"Kms\","
         "\"fields\": {"
-          "\"Sentence\": \"%s\","
-          "\"Words\": \"%s\","
-          "\"Audio\": \"\""
+          "\"Deutsch\": \"%s\","
+          "\"English\": \"%s\","
+          "\"Audio\": \"\","
+          "\"Pos\": \"\""
         "},"
         "\"options\": {"
           "\"allowDuplicate\": false,"
@@ -836,7 +836,8 @@ int main(int argc, char **argv) {
 
   //log_file = fopen("/tmp/armee-log", "w");
   log_file = stderr;
-  set_logging_level(0);
+  set_logging_level(2);
+  set_logging_string("Armee");
 
   s = setup_server_connection(log_file, "armee", "sarmale");
 

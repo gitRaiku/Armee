@@ -133,8 +133,13 @@ struct rpacket parse_packet(struct rpacket p) {
 uint8_t run = 1;
 int main(void) {
   log_file = fopen("/var/log/sarmale.log", "a");
+  if (log_file == NULL) {
+    logg(10, stderr, "Could not open the log file! [%m]");
+    exit(1);
+  }
   //log_file = stdout;
   set_logging_level(10);
+  set_logging_string("Sarmale");
 
   load_dict(log_file);
   /*
