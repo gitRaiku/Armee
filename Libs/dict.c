@@ -37,7 +37,6 @@ uint64_t wh(strp s, uint32_t l) {
 
 void gs(char *b, uint32_t l) {
   if (crb == 0) {
-    //fprintf(stdout, "Buffer read ran out! Reading again!\n");
     if (read(d, rbuf, rbl) < 0) {
       logg(10, log_file, "Error reading from rdict! %m");
       exit(1);
@@ -48,10 +47,8 @@ void gs(char *b, uint32_t l) {
     memcpy(b, rbuf + crb, rbl - crb);
     int32_t cd = rbl - crb;
     crb = 0;
-    //fprintf(stdout, "Reading %u and buffering again!\n", cd);
     gs(b + cd, l - cd);
   } else {
-    //fprintf(stdout, "Reading %u!\n", l);
     memcpy(b, rbuf + crb, l);
     crb += l;
     if (crb >= rbl) {
@@ -77,16 +74,16 @@ strp reads(uint16_t l) {
 
 void print_entry(uint32_t i) {
   int32_t j, k;
-  fprintf(stdout, "word: %s(%lu); pos: %s\n", g(entries[i].word), entries[i].hash, g(entries[i].pos));
+  logg(0, log_file, "word: %s(%lu); pos: %s\n", g(entries[i].word), entries[i].hash, g(entries[i].pos));
   for(j = 0; j < entries[i].soundl; ++j) {
-    fprintf(stdout, "\tsound: %s\n", g(entries[i].sounds[j]));
+    logg(0, log_file, "\tsound: %s\n", g(entries[i].sounds[j]));
   }
   for(j = 0; j < entries[i].sensel; ++j) {
     for(k = 0; k < entries[i].senses[j].glossel; ++k) {
-      fprintf(stdout, "\tgloss: %s\n", g(entries[i].senses[j].glosses[k]));
+      logg(0, log_file, "\tgloss: %s\n", g(entries[i].senses[j].glosses[k]));
     }
     for(k = 0; k < entries[i].senses[j].linkl; ++k) {
-      fprintf(stdout, "\tlink: %s\n", g(entries[i].senses[j].links[k]));
+      logg(0, log_file, "\tlink: %s\n", g(entries[i].senses[j].links[k]));
     }
   }
 }
@@ -213,17 +210,14 @@ uint32_t search_hash(uint64_t hash) {
   int32_t answer = lbound;
   while (lbound <= ubound) {
     cpos = (ubound + lbound) / 2;
-    //print_entry(cpos);
     if (entries[cpos].hash <= hash) {
       answer = cpos;
       if (entries[cpos].hash == hash) {
         break;
       }
       lbound = cpos + 1;
-      //fprintf(stdout, "%lu <= %lu [%i %i]\n", entries[cpos].hash, hash, lbound, ubound);
     } else {
       ubound = cpos - 1;
-      //fprintf(stdout, "%lu > %lu [%i %i]\n", entries[cpos].hash, hash, lbound, ubound);
     }
   }
   return answer;
@@ -231,7 +225,6 @@ uint32_t search_hash(uint64_t hash) {
 
 void search_dict(char *word, uint32_t l, uint32_t *__restrict p, uint32_t *__restrict pl) {
   uint64_t hash = whs(word, l);
-  //fprintf(stdout, "Searching for %s[%lu]\n", word, hash);
   *p = search_hash(hash);
   if (entries[*p].hash != hash) {
     *p = 0;

@@ -50,6 +50,8 @@ $(MOD_DIR):
 $(BIN_DIR)/$(TARGET): $(C_OBJ)
 	$(LINKER) $(L_OBJ) $(C_OBJ) $(LFLAGS) -o $@
 
+install: $(BIN_DIR)/$(TARGET)
+	cp -f $(BIN_DIR)/$(TARGET) /usr/local/bin/$(TARGET)
 
 STRING = "der Alte würfelt Würfel nicht br̩no"
 

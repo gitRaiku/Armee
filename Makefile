@@ -16,3 +16,7 @@ sarmale: libs
 clean:
 	$(MAKE) $(MAKEOPTS) -C ./Armee clean
 	$(MAKE) $(MAKEOPTS) -C ./Sarmale clean
+
+install:
+	$(MAKE) $(MAKEOPTS) -C ./Armee install
+	$(MAKE) $(MAKEOPTS) -C ./Sarmale install

@@ -249,7 +249,6 @@ void show_entries() {
   endwin();
   if (ents) {
     for(i = 0; i < entsl; ++i) {
-      //fprintf(stdout, "DEL %i/%u %p %p\n", i + 1, entrl, ents[i].p, ents[i].w);
       del_panel(ents[i].p);
       delwin(ents[i].w);
     }
@@ -337,7 +336,6 @@ void show_entries() {
 void get_results() {
   unload_dict();
   struct rpacket p = get_packet(log_file, s);
-  //fprintf(stdout, "Got response %x %u\n", p.func, p.len);
   load_dicts(stdout, p.data, p.len);
   show_entries();
 }
@@ -353,7 +351,6 @@ uint32_t glossc(uint32_t p) { /// I know this is inneficient but i do not care a
 
 #define CE entries[cp.cy - 1]
 strp ggloss(uint32_t k, int32_t p) {
-  //fprintf(stdout, "GOT %u %i\n", k, p);
   return CE.senses[k].glosses[p];
 }
 
@@ -434,7 +431,6 @@ void add_sel_output() {
       }
       outs[i].strs[outs[i].strl] = strdup(s);
       *outs[i].strs[outs[i].strl] = toupper(*outs[i].strs[outs[i].strl]);
-      //fprintf(stdout, "Got %s\n", outs[i].strs[outs[i].strl]);
       ++outs[i].strl;
       update_outp();
       return;
@@ -449,7 +445,6 @@ void add_sel_output() {
   outs[outsl].ed = selEnd;
   outs[outsl].strs[0] = strdup(s);
   *outs[outsl].strs[0] = toupper(*outs[outsl].strs[0]);
-  //fprintf(stdout, "Got %s\n", outs[outsl].strs[0]);
   outs[outsl].strl = 1;
   ++outsl;
   update_outp();
@@ -828,9 +823,7 @@ void to_anki() {
     "}"
   "}'"; // Action[gui/nogui] Text Words
     sprintf(req, s, action, cte, rese);
-    fprintf(stdout, "%s\n", req);
   }
-  fprintf(stdout, "%s\n", req);
   if (system(req));
 
 }

@@ -115,7 +115,7 @@ struct rpacket deepl_word(char *word, uint32_t wl) {
 }
 
 struct rpacket parse_packet(struct rpacket p) {
-  fprintf(stdout, "Got new packet! %u %u %s\n", p.func, p.len, p.data);
+  logg(0, log_file, "Got new packet! %u %u %s\n", p.func, p.len, p.data);
   switch (p.func) {
     case FUNC_WORD:
       logg(0, log_file, "Search word %s\n", p.data);
@@ -132,9 +132,9 @@ struct rpacket parse_packet(struct rpacket p) {
 
 uint8_t run = 1;
 int main(void) {
-  //log_file = fopen("/var/log/sarmale.log", "a");
-  log_file = stdout;
-  set_logging_level(0);
+  log_file = fopen("/var/log/sarmale.log", "a");
+  //log_file = stdout;
+  set_logging_level(10);
 
   load_dict(log_file);
   /*
