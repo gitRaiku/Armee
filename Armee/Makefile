@@ -53,7 +53,7 @@ $(BIN_DIR)/$(TARGET): $(C_OBJ)
 install: $(BIN_DIR)/$(TARGET)
 	cp -f $(BIN_DIR)/$(TARGET) /usr/local/bin/$(TARGET)
 
-STRING = "Vogel der Alte würfelt Würfel nicht br̩no"
+STRING = "Vogel überspitzt kippen der Alte würfelt Würfel nicht bo"
 
 # STRING = "derr"
 run: build

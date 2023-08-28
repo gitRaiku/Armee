@@ -423,6 +423,18 @@ void add_sel_output() {
   char *s = g(ggloss(cp.ccy, cp.cccy));
   int32_t i;
   if (*s == '(') { while (*s != ')') { ++s; } s += 2; }
+  uint32_t sl = strlen(s) - 1;
+  uint8_t sssss = 0;
+  if (*s) { 
+    if (s[sl] == ']') { 
+      sssss = 1; 
+      while (s[sl] != '[') { 
+        --sl; 
+      } 
+      --sl;
+      s[sl] = '\0'; 
+    } 
+  }
   for(i = 0; i < outsl; ++i) {
     if (outs[i].hash == CE.hash) {
       if (outs[i].strl == 8) {
@@ -432,6 +444,7 @@ void add_sel_output() {
       *outs[i].strs[outs[i].strl] = toupper(*outs[i].strs[outs[i].strl]);
       ++outs[i].strl;
       update_outp();
+      if (sssss) { s[sl] = ' '; }
       return;
     }
   }
@@ -446,6 +459,7 @@ void add_sel_output() {
   *outs[outsl].strs[0] = toupper(*outs[outsl].strs[0]);
   outs[outsl].strl = 1;
   ++outsl;
+  if (sssss) { s[sl] = ' '; }
   update_outp();
 }
 
@@ -502,6 +516,22 @@ void handle_input(char ch) {
     cp.ccy = 0;
     if (cp.sel) {
       switch (ch) {
+        case 'w':
+          uint32_t cmemp = go_until(text, textl, cp.len + cp.pos);
+          while ((cp.len < textdl - 1 - cp.pos) && text[cmemp] != ' ') { 
+            ++cp.len; 
+            cmemp = go_until(text, textl, cp.len + cp.pos);
+          }
+          --cp.len;
+          return;
+        case '0':
+          cp.len = -cp.pos;
+          return;
+        case '$':
+        case 'A':
+          cp.len = textdl - 1 - cp.pos;
+          return;
+        case 0x1b:
         case 'v':
           cp.sel = 0;
           cp.pos += cp.len;
@@ -538,6 +568,13 @@ void handle_input(char ch) {
       }
     } else {
       switch (ch) {
+        case '0':
+          cp.pos = 0;
+          return;
+        case '$':
+        case 'A':
+          cp.pos = textdl - 1;
+          return;
         case 'v':
           cp.sel = 1;
           cp.len = 0;
