@@ -373,6 +373,9 @@ uint32_t glossh(uint32_t k, uint32_t p) {
 
 void clear_dentry(uint32_t k, uint32_t p) {
   if (cp.cy) {
+    if (CE.senses[0].glossel == 0) { // Why the fuck is the dictionary malformed for fucking Bär :(
+      return;
+    }
     mvwchgat(ents[cp.cy - 1].w, glossh(k, p), 1, strdlen(g(ggloss(k, p))), 0, 0, NULL);
   }
 }
@@ -390,6 +393,9 @@ void highlight_selection() {
     int32_t w = strdlen(g(glink(cp.ccy)));
     mvwchgat(ents[cp.cy - 1].w, glossh(cp.ccy, 0), wx - 5 - w, w, A_REVERSE | A_UNDERLINE, 0, NULL);
   } else if (cp.cy) {
+    if (CE.senses[0].glossel == 0) { // Why the fuck is the dictionary malformed for fucking Bär :(
+      return;
+    }
     clear_dentry(cp.ccy, cp.cccy);
     mvwchgat(ents[cp.cy - 1].w, glossh(cp.ccy, cp.cccy), 1, strdlen(g(ggloss(cp.ccy, cp.cccy))), A_BOLD, 0, NULL);
   }
@@ -518,7 +524,7 @@ void handle_input(char ch) {
       switch (ch) {
         case 'w':
           uint32_t cmemp = go_until(text, textl, cp.len + cp.pos);
-          while ((cp.len < textdl - 1 - cp.pos) && text[cmemp] != ' ') { 
+          while ((cp.len <= textdl - 1 - cp.pos) && text[cmemp] != ' ') { 
             ++cp.len; 
             cmemp = go_until(text, textl, cp.len + cp.pos);
           }

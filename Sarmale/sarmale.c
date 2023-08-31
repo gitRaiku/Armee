@@ -141,7 +141,7 @@ int main(void) {
   } else {
     log_file = stdout;
   }
-  set_logging_level(0);
+  set_logging_level(10);
   set_logging_string("Sarmale");
 
   load_dict(log_file);
