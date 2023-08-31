@@ -559,6 +559,20 @@ void handle_input(char ch) {
           ++cp.len;
           cp.len = bound(cp.len, -cp.pos, textdl - 1 - cp.pos);
           return;
+        case 'f':
+          get_selection();
+          selection[selt] = '\0';
+          werase(se.w);
+          box(se.w, 0, 0);
+          mvwaddnstr(se.w, 15, 1, selection, selt);
+          endwin();
+          char intr[64];
+          if (fscanf(stdin, "%s", intr));
+          query_dict(intr, strlen(intr));
+          cp.sel = 0;
+          cp.pos += cp.len;
+          cp.len = 0;
+          return;
         case ' ':
         case '\n':
           get_selection();
