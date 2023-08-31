@@ -567,6 +567,7 @@ void handle_input(char ch) {
           mvwaddnstr(se.w, 15, 1, selection, selt);
           endwin();
           char intr[64];
+          fprintf(stdout, "Got %s:\n", selection);
           if (fscanf(stdin, "%s", intr));
           query_dict(intr, strlen(intr));
           cp.sel = 0;
