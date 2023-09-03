@@ -882,8 +882,11 @@ void to_anki() {
   "}'"; // Action[gui/nogui] Text Words
     sprintf(req, s, action, cte, rese);
   }
-  if (system(req));
-
+  if (system(req)) {
+    if (system("plant \"Could not connect to anki!\"")) {
+      if (system("herbe \"Could not connect to anki!\""));
+    }
+  }
 }
 
 int main(int argc, char **argv) {
