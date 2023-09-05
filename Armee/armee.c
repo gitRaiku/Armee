@@ -762,12 +762,28 @@ char *get_last_fname(char *s, int32_t l) {
 void eescape(char *r, char *s) {
   while (*s) {
     if (*s == '\'') {
-      *r = '\\'; ++r;
+      *r = '&'; ++r;
+      *r = 'a'; ++r;
+      *r = 'p'; ++r;
+      *r = 'o'; ++r;
+      *r = 's'; ++r;
+      *r = ';'; ++r;
+      ++s;
+      continue;
     } else if (*s =='\n') {
       *r = '<'; ++r;
       *r = 'b'; ++r;
       *r = 'r'; ++r;
       *r = '>'; ++r;
+      ++s;
+      continue;
+    } else if (*s =='"') {
+      *r = '&'; ++r;
+      *r = 'q'; ++r;
+      *r = 'u'; ++r;
+      *r = 'o'; ++r;
+      *r = 't'; ++r;
+      *r = ';'; ++r;
       ++s;
       continue;
     }
@@ -817,6 +833,7 @@ void to_anki() {
   }
   char rese[2048] = {0};
   eescape(rese, res);
+  // fprintf(stdout, "\n%s\n",  rese);
 
   char req[2048] = {0};
   if (*audioPath) {
@@ -882,6 +899,7 @@ void to_anki() {
   "}'"; // Action[gui/nogui] Text Words
     sprintf(req, s, action, cte, rese);
   }
+  fprintf(stdout, "\n%s\n", req);
   if (system(req)) {
     if (system("plant \"Could not connect to anki!\"")) {
       if (system("herbe \"Could not connect to anki!\""));
