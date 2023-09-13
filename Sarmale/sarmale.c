@@ -132,7 +132,7 @@ struct rpacket parse_packet(struct rpacket p) {
 
 uint8_t run = 1;
 int main(void) {
-  if (0) {
+  if (1) {
     set_logging_level(10);
     log_file = fopen("/var/log/sarmale.log", "a");
     if (log_file == NULL) {
