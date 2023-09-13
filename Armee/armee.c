@@ -113,7 +113,7 @@ uint32_t go_until(char *str, uint32_t strl, int pos) {
     ++cdpos;
   }
   if (cmpos <= strl) {
-    return cmpos;
+    return cmpos + runel(str + cmpos) - 1;
   } else {
     return cmpos - chml;
   }
@@ -425,10 +425,12 @@ void update_outp() {
   }
 }
 
-void add_sel_output() {
+void add_sel_output(uint8_t keepTags) {
   char *s = g(ggloss(cp.ccy, cp.cccy));
   int32_t i;
-  if (*s == '(') { while (*s != ')') { ++s; } s += 2; }
+  if (!keepTags) {
+    if (*s == '(') { while (*s != ')') { ++s; } s += 2; }
+  }
   uint32_t sl = strlen(s) - 1;
   uint8_t sssss = 0;
   if (*s) { 
@@ -677,9 +679,14 @@ void handle_input(char ch) {
         cp.cx = bound(cp.cx, 0, 1);
         highlight_selection();
         return;
+      case 'c':
+        if (cp.cx == 0) {
+          add_sel_output(1);
+        }
+        return;
       case ' ':
         if (cp.cx == 0) {
-          add_sel_output();
+          add_sel_output(0);
         } else {
           query_dict(g(glink(cp.ccy)), strlen(g(glink(cp.ccy))));
           cp.cy = entrl ? 1 : 0;
