@@ -103,7 +103,7 @@ uint32_t strdlen(char *str) { /// TODO: Fix
   return len;
 }
 
-uint32_t go_until(char *str, uint32_t strl, int pos) {
+uint32_t go_until(char *str, uint32_t strl, int pos, int after) {
   uint32_t cmpos = 0;
   uint32_t chml = 0;
   uint32_t cdpos = 0;
@@ -113,7 +113,7 @@ uint32_t go_until(char *str, uint32_t strl, int pos) {
     ++cdpos;
   }
   if (cmpos <= strl) {
-    return cmpos + runel(str + cmpos) - 1;
+    return cmpos + (after ? (runel(str + cmpos) - 1) : 0);
   } else {
     return cmpos - chml;
   }
@@ -125,7 +125,7 @@ void draw_text() {
   uint32_t lmpos = 0;
 
   for(i = 0; i < nlines; ++i) {
-    cmpos += go_until(text + cmpos, textl - cmpos, chpl);
+    cmpos += go_until(text + cmpos, textl - cmpos, chpl, 1);
     mvwaddnstr(ma.w, i + 1, 1, text + lmpos, cmpos - lmpos);
     lmpos = cmpos;
   }
@@ -220,8 +220,8 @@ int32_t bound(int32_t v, int32_t o1, int32_t o2) {
 }
 
 void get_selection() {
-  uint32_t st = go_until(text, textl, cp.pos);
-  uint32_t ed = go_until(text, textl, cp.pos + cp.len);
+  uint32_t st = go_until(text, textl, cp.pos, 0);
+  uint32_t ed = go_until(text, textl, cp.pos + cp.len, 1);
   if (ed < st) {
     uint32_t t = st;
     st = ed;
@@ -525,10 +525,10 @@ void handle_input(char ch) {
     if (cp.sel) {
       switch (ch) {
         case 'w':
-          uint32_t cmemp = go_until(text, textl, cp.len + cp.pos);
+          uint32_t cmemp = go_until(text, textl, cp.len + cp.pos, 0);
           while ((cp.len <= textdl - 1 - cp.pos) && text[cmemp] != ' ') { 
             ++cp.len; 
-            cmemp = go_until(text, textl, cp.len + cp.pos);
+            cmemp = go_until(text, textl, cp.len + cp.pos, 0);
           }
           --cp.len;
           return;
@@ -927,8 +927,24 @@ int main(int argc, char **argv) {
 
   s = setup_server_connection(log_file, "armee", "sarmale");
 
-  text = strdup(argv[1]);
+  {
+    char *ss = argv[1];
+    while (*ss && *ss == ' ') {
+      ++ss;
+    }
+    int32_t l = strlen(ss);
+    while (l > 1 && ss[l - 1] == ' ') {
+      --l;
+    }
+    ss[l] = '\0';
+    text = strdup(ss);
+  }
   textl = strlen(text);
+  if (textl == 0) {
+    logg(10, log_file, "No text was supplied!");
+    return 1;
+  }
+
   if (argc == 3) {
     audioPath = strdup(argv[2]);
     apathl = strlen(audioPath);
