@@ -945,10 +945,8 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  if (argc == 3) {
-    audioPath = strdup(argv[2]);
-    apathl = strlen(audioPath);
-  }
+  if (argc == 3) { audioPath = strdup(argv[2]); } else { audioPath = strdup(""); }
+  apathl = strlen(audioPath);
   
   initscr();
   curs_set(0);
