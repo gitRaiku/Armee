@@ -486,10 +486,22 @@ void handle_input(char ch) {
   switch (ch) {
     case 'q':
     case 'O':
-      RUNNING = 0;
+      RUNNING = 0b000;
       return;
     case 'I':
-      RUNNING = 1;
+      RUNNING = 0b001;
+      return;
+    case 'p':
+      RUNNING = 0b110;
+      return;
+    case 'P':
+      RUNNING = 0b111;
+      return;
+    case 'u':
+      RUNNING = 0b010;
+      return;
+    case 'U':
+      RUNNING = 0b011;
       return;
     case 'J':
       if (cp.cx) {
@@ -803,7 +815,7 @@ void eescape(char *r, char *s) {
 
 void to_anki() {
   char action[12] = {0};
-  if (RUNNING == 0) {
+  if ((RUNNING&1) == 0) {
     sprintf(action, "addNote");
   } else {
     sprintf(action, "guiAddCards");
@@ -814,8 +826,10 @@ void to_anki() {
   {
     int32_t i, j;
     for(i = 0; i < outsl; ++i) {
-      sprintf(res + resl, "%s: ", outs[i].word);
-      resl += strlen(outs[i].word) + 2;
+      if ((RUNNING&2) == 0) {
+        sprintf(res + resl, "%s: ", outs[i].word);
+        resl += strlen(outs[i].word) + 2;
+      }
       for(j = 0; j < outs[i].strl; ++j) {
         sprintf(res + resl, "%s", outs[i].strs[j]);
         resl += strlen(outs[i].strs[j]);
@@ -833,11 +847,14 @@ void to_anki() {
   res[resl] = '\0';
 
   char cte[2048] = {0};
-  {
+  if ((RUNNING&4) == 0) {
     char ct[2048] = {0};
     bold_text(ct);
     eescape(cte, ct);
+  } else {
+    eescape(cte, text);
   }
+
   char rese[2048] = {0};
   eescape(rese, res);
   // fprintf(stdout, "\n%s\n",  rese);
@@ -964,8 +981,8 @@ int main(int argc, char **argv) {
   //update();
 
   char ch;
-  RUNNING = 2;
-  while (RUNNING == 2 && (ch = wgetch(ma.w)) != 'q') {
+  RUNNING = 11;
+  while (RUNNING == 11 && (ch = wgetch(ma.w)) != 'q') {
     handle_input(ch);
     highlight_text();
     update_panels();
@@ -975,7 +992,7 @@ int main(int argc, char **argv) {
   endwin();
   unload_dict();
 
-  if (RUNNING < 2) {
+  if (RUNNING < 5) {
     to_anki();
   }
   shutdown_server_connection(s);
