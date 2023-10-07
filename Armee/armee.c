@@ -678,6 +678,7 @@ void handle_input(char ch) {
         highlight_selection();
         return;
       case 'h':
+      case 'H':
         clear_dentry(cp.ccy, cp.cccy);
         clear_dlentry(cp.ccy);
         --cp.cx;
@@ -685,6 +686,7 @@ void handle_input(char ch) {
         highlight_selection();
         return;
       case 'l':
+      case 'L':
         clear_dentry(cp.ccy, cp.cccy);
         clear_dlentry(cp.ccy);
         ++cp.cx;
