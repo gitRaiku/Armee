@@ -14,6 +14,9 @@
 #include "../Libs/socket.h" 
 #include "../Libs/dict.h" // Supplies entrl, entries and strings
 
+uint32_t __inline__ __attribute((pure)) max(uint32_t o1, uint32_t o2) { return o1 > o2 ? o1 : o2; }
+#define IMAX(a, b) { (a) = max(a, b); }
+
 FILE *__restrict log_file;
 
 void help() {
@@ -764,19 +767,22 @@ void bold_text(char *res) {
 
   uint32_t led = 0;
   uint32_t len;
+  uint32_t cst, ced;
   for(i = 0; i < outsl; ++i) {
-    while (i < outsl - 1 && outs[i].st == outs[i + 1].st) { ++i; }
-    len = outs[i].st - led;
+    cst = outs[i].st;
+    ced = outs[i].ed;
+    while (i < outsl - 1 && ced >= outs[i + 1].st) { ++i; IMAX(ced, outs[i].ed); }
+    len = cst - led;
     memcpy(res + resl, text + led, len);
     resl += len;
 
     strncpy(res + resl, "<b>", 4);
     resl += 3;
 
-    len = outs[i].ed - outs[i].st + 1;
-    memcpy(res + resl, text + outs[i].st, len);
+    len = ced - cst + 1;
+    memcpy(res + resl, text + cst, len);
     resl += len;
-    led = outs[i].ed + 1;
+    led = ced + 1;
 
     strncpy(res + resl, "</b>", 5);
     resl += 4;
