@@ -487,7 +487,7 @@ void query_dict(char *st, uint32_t l) {
 
 void query_anki(char *s) {
   char r[1024];
-  snprintf(r, sizeof(r), "curl localhost:8765 -X -POST -d \'{\"action\": \"guiBrowse\",\"version\": 6,\"params\": {\"query\": \"%s\"}}\'", s);
+  snprintf(r, sizeof(r), "curl localhost:8765 -X -POST -d \'{\"action\": \"guiBrowse\",\"version\": 6,\"params\": {\"query\": \"%s\"}}\' &> /dev/null", s);
   if (system(r)) {
     if (system("plant \"Could not connect to query anki!\"")) {
       if (system("herbe \"Could not connect to query anki!\""));
@@ -715,6 +715,12 @@ void handle_input(char ch) {
         if (cp.cx == 0) {
           add_sel_output(1);
         }
+        return;
+      case 'n':
+        char *s = g(CE.word);
+        //endwin();
+        query_anki(s);
+        //initscr();
         return;
       case ' ':
         if (cp.cx == 0) {
