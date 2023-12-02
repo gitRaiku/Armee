@@ -428,6 +428,12 @@ void update_outp() {
   }
 }
 
+void __toupper(char *c, uint32_t *__restrict el) {
+  if (!strncmp(c, "ü", 2)) { el += 2; strncpy(c, "Ü", 2); } 
+  else if (!strncmp(c, "ö", 2)) { el += 2; strncpy(c, "Ö", 2); } 
+  else { el += 2; *c = toupper(*c); }
+}
+
 void add_sel_output(uint8_t keepTags) {
   char *s = g(ggloss(cp.ccy, cp.cccy));
   int32_t i;
@@ -452,8 +458,7 @@ void add_sel_output(uint8_t keepTags) {
         return;
       }
       outs[i].strs[outs[i].strl] = strdup(s);
-      *outs[i].strs[outs[i].strl] = toupper(*outs[i].strs[outs[i].strl]);
-      ++outs[i].strl;
+      __toupper(outs[i].strs[outs[i].strl], &outs[i].strl);
       update_outp();
       if (sssss) { s[sl] = ' '; }
       return;
@@ -467,8 +472,8 @@ void add_sel_output(uint8_t keepTags) {
   outs[outsl].st = selStart;
   outs[outsl].ed = selEnd;
   outs[outsl].strs[0] = strdup(s);
-  *outs[outsl].strs[0] = toupper(*outs[outsl].strs[0]);
-  outs[outsl].strl = 1;
+  outs[outsl].strl = 0;
+  __toupper(outs[outsl].strs[0], &outs[outsl].strl);
   ++outsl;
   if (sssss) { s[sl] = ' '; }
   update_outp();
@@ -718,9 +723,7 @@ void handle_input(char ch) {
         return;
       case 'n':
         char *s = g(CE.word);
-        //endwin();
         query_anki(s);
-        //initscr();
         return;
       case ' ':
         if (cp.cx == 0) {

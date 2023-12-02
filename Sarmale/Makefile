@@ -16,7 +16,8 @@ CCFLAGS  = -ggdb3 -Og \
 					 -Wall -Wpedantic -march=native -mtune=native -fmodulo-sched \
 					 -fstack-clash-protection -pthread \
 					 -pipe -fkeep-inline-functions \
-					 -pthread -D_FORTIFY_SOURCE=2
+					 -pthread -D_FORTIFY_SOURCE=2 \
+					 -Wno-stringop-truncation
 
 LINKER   = $(CC)
 

@@ -32,19 +32,39 @@ int pstr(char *v, char *s) {
   return 2 + l;
 }
 
+void __toupper(char *c) {
+  if (!strncmp(c, "ü", 2)) { strncpy(c, "Ü", 2); } 
+  else if (!strncmp(c, "ö", 2)) { strncpy(c, "Ö", 2); } 
+  else { *c = toupper(*c); }
+}
+
+void __tolower(char *c) {
+  if (!strncmp(c, "Ü", 2)) { strncpy(c, "ü", 2); }
+  else if (!strncmp(c, "Ö", 2)) { strncpy(c, "ö", 2); }
+  else { *c = tolower(*c); }
+}
+
+uint8_t __isupper(char *c) {
+  if (!strncmp(c, "Ü", 2)) { return 1; }
+  else if (!strncmp(c, "Ö", 2)) { return 1; }
+  else { return isupper(*c) != 0; }
+}
+
 struct rpacket search_word(char *word, uint32_t wl) {
   uint32_t p1, pl1;
   uint32_t p2, pl2;
   struct rpacket p = {0};
   
   p.data = malloc(2048);
-  if (isupper(word[0])) {
+  if (__isupper(word)) {
     search_dict(word, wl, &p1, &pl1);
-    word[0] = tolower(word[0]);
+    __tolower(word);
+    fprintf(stdout, "Ward was upper ge5t %s\n", word);
     search_dict(word, wl, &p2, &pl2);
   } else {
     search_dict(word, wl, &p1, &pl1);
-    word[0] = toupper(word[0]);
+    __toupper(word);
+    fprintf(stdout, "Ward was ower ge5t %s\n", word);
     search_dict(word, wl, &p2, &pl2);
   }
 
