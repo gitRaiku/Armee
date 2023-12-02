@@ -431,7 +431,7 @@ void update_outp() {
 void __toupper(char *c, uint32_t *__restrict el) {
   if (!strncmp(c, "ü", 2)) { el += 2; strncpy(c, "Ü", 2); } 
   else if (!strncmp(c, "ö", 2)) { el += 2; strncpy(c, "Ö", 2); } 
-  else { el += 2; *c = toupper(*c); }
+  else { el += 1; *c = toupper(*c); }
 }
 
 void add_sel_output(uint8_t keepTags) {
