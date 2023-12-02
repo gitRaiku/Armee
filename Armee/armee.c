@@ -429,9 +429,9 @@ void update_outp() {
 }
 
 void __toupper(char *c, uint32_t *__restrict el) {
-  if (!strncmp(c, "ü", 2)) { el += 2; strncpy(c, "Ü", 2); } 
-  else if (!strncmp(c, "ö", 2)) { el += 2; strncpy(c, "Ö", 2); } 
-  else { el += 1; *c = toupper(*c); }
+  if (!strncmp(c, "ü", 2)) { *el += 2; strncpy(c, "Ü", 2); } 
+  else if (!strncmp(c, "ö", 2)) { *el += 2; strncpy(c, "Ö", 2); } 
+  else { *el += 1; *c = toupper(*c); }
 }
 
 void add_sel_output(uint8_t keepTags) {
@@ -440,6 +440,7 @@ void add_sel_output(uint8_t keepTags) {
   if (!keepTags) {
     if (*s == '(') { while (*s != ')') { ++s; } s += 2; }
   }
+  endwin();
   uint32_t sl = strlen(s) - 1;
   uint8_t sssss = 0;
   if (*s) { 
