@@ -1,0 +1,15 @@
+#!/bin/sh
+
+wget "https://kaikki.org/dictionary/German/words/kaikki.org-dictionary-German-words.json" -O deutsch.json
+./d.py
+rm deutsch.json deutsch_fixed.json d.json
+chmod 777 rdict
+SIZE=$(du -b /usr/share/dicts/rgdict | awk '{print $1}')
+echo "#define STRINGS_SIZE $SIZE" > ../Libs/dictsize.h
+sudo mv rdict /usr/share/dicts/rgdict
+cd ..
+make clean
+make
+sudo make install -j8 -l8
+
+

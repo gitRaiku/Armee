@@ -34,7 +34,8 @@ struct wikte {
 };
 
 #define g(x) (strings + (x))
-#define STRINGS_SIZE 33969860
+#include "dictsize.h"
+// #define STRINGS_SIZE 40054251
 #define STRINGS_SMALL_SIZE 8192
 extern char *__restrict strings;
 

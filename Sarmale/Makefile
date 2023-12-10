@@ -22,7 +22,7 @@ CCFLAGS  = -ggdb3 -Og \
 LINKER   = $(CC)
 
 DEBUGGER = gdb -q
-VALGRIND = valgrind --leak-check=summary --vgdb=yes --vgdb-error=1
+VALGRIND = valgrind --leak-check=summary # --vgdb=yes --vgdb-error=1
 
 DATE := $(shell date "+%Y-%m-%d")
 
@@ -65,6 +65,9 @@ install: logfile $(BIN_DIR)/$(TARGET)
 
 run: build
 	./$(BIN_DIR)/$(TARGET)
+
+valgrind: build
+	$(VALGRIND) $(BIN_DIR)/$(TARGET)
 
 debug: build
 	$(DEBUGGER) $(BIN_DIR)/$(TARGET)
