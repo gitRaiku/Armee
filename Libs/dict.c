@@ -104,6 +104,10 @@ uint8_t wdif(uint32_t x, uint32_t y) {
   return 0;
 }
 
+int cmp(const void *o1, const void *o2) { /// `>` means ascending; `<` means descending
+  return (*(struct wikte *)o1).hash > (*(struct wikte *)o2).hash;
+}
+
 void load_dict(FILE *__restrict lfile) {
   log_file = lfile;
   d = open("/usr/share/dicts/rgdict", O_RDONLY);
@@ -147,6 +151,7 @@ void load_dict(FILE *__restrict lfile) {
         rrd(senses[j].link, k, rd(senses[j].links[k]));
         );
   }
+  qsort(entries, entrl, sizeof(entries[0]), cmp);
 #undef rd
 #undef rrd
 
@@ -211,6 +216,7 @@ uint32_t search_hash(uint64_t hash) {
   int32_t answer = lbound;
   while (lbound <= ubound) {
     cpos = (ubound + lbound) / 2;
+    fprintf(stdout, "Searching hash %lu at %u(%lu)\n", hash, cpos, entries[cpos].hash);
     if (entries[cpos].hash >= hash) {
       answer = cpos;
       ubound = cpos - 1;
