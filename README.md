@@ -31,4 +31,4 @@ Movement and interaction is done using vim keybindings explained in the man page
 Or by using the ``new_german_sub_to_anki.lua`` mpv script which takes the current mpv subtitle and sends that to ``ankeec``
 
 # Armee
-[Ankee](github.com/gitRaiku/ankee) is a tool that does the same thing but for japanese subtitles
+[Ankee](https://github.com/gitRaiku/Ankee) is a tool that does the same thing but for japanese subtitles
