@@ -3,7 +3,7 @@ A tool to turn german subtitles into anki flashcards.
 
 It is based off of a rip of wiktionary from [here](https://kaikki.org/dictionary/German/words.html) and it uses ncurses for the tui.
 
-![Armee](https://user-images.githubusercontent.com/59704655/233614419-b593fb0f-7727-4281-8cf9-a21a5efbfcb8.png)
+![Armee](https://github.com/gitRaiku/Armee/blob/master/Resources/Armee.png?raw=true)
 
 # Installation
 Running 
