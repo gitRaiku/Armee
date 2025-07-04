@@ -22,7 +22,7 @@ end
 to your ``config.fish`` or the equivalent for your shell, and modifying the ``sankee`` script for your terminal+shell combo should let the ``resources/new_sub_to_anki.lua`` mpv script work.
 
 # Usage
-You can start the server by just running ``sarmale``
+You can start the server by just running ``sarmale`` and having anki with [anki-connect](https://git.sr.ht/~foosoft/anki-connect/) open and running.
 
 Now you can use the tool by running ``armee <display text> [path/to/audio/file]``
 
