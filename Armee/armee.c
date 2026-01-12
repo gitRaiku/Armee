@@ -496,7 +496,9 @@ void query_anki(char *s) {
   snprintf(r, sizeof(r), "curl localhost:8765 -X -POST -d \'{\"action\": \"guiBrowse\",\"version\": 6,\"params\": {\"query\": \"%s\"}}\' &> /dev/null", s);
   if (system(r)) {
     if (system("plant \"Could not connect to query anki!\"")) {
-      if (system("herbe \"Could not connect to query anki!\""));
+      if (system("herbe \"Could not connect to query anki!\"")) {
+        if (system("notify-send \"Could not connect to query anki!\""));
+      }
     }
   }
 }
@@ -959,7 +961,9 @@ void to_anki() {
   fprintf(stdout, "\n%s\n", req);
   if (system(req)) {
     if (system("plant \"Could not connect to anki!\"")) {
-      if (system("herbe \"Could not connect to anki!\""));
+      if (system("herbe \"Could not connect to anki!\"")) {
+        if (system("notify-send \"Could not connect to anki!\""));
+      }
     }
   }
 }

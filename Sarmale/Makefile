@@ -53,18 +53,18 @@ $(MOD_DIR):
 $(BIN_DIR)/$(TARGET): $(C_OBJ)
 	$(LINKER) $(L_OBJ) $(C_OBJ) $(LFLAGS) -o $@
 
-logfile:
+install: $(BIN_DIR)/$(TARGET)
 	touch /var/log/sarmale.log
 	chmod 664 /var/log/sarmale.log
 	chgrp log /var/log/sarmale.log
+	mkdir -p /usr/share/dicts/
 	cp -f rdict /usr/share/dicts/rgdict
 	chmod 664 /usr/share/dicts/rgdict
-
-install: logfile $(BIN_DIR)/$(TARGET)
 	cp -f $(BIN_DIR)/$(TARGET) /usr/local/bin/$(TARGET)
 
 uninstall:
 	rm /usr/local/bin/$(TARGET)
+	rm /usr/share/dicts/rgdict
 
 run: build
 	./$(BIN_DIR)/$(TARGET)
