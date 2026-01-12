@@ -16,7 +16,7 @@ CCFLAGS  = -ggdb3 -Og \
 					 -fstack-clash-protection -pthread \
 					 -pipe -fkeep-inline-functions \
 					 -pthread -D_FORTIFY_SOURCE=2 \
-					 -Wno-stringop-truncation
+					 -Wno-stringop-truncation -Wno-incompatible-pointer-types
 
 LINKER   = $(CC)
 
@@ -53,6 +53,9 @@ $(BIN_DIR)/$(TARGET): $(C_OBJ)
 
 install: $(BIN_DIR)/$(TARGET)
 	cp -f $(BIN_DIR)/$(TARGET) /usr/local/bin/$(TARGET)
+
+uninstall:
+	rm /usr/local/bin/$(TARGET)
 
 # STRING = "    über Aü krallen Bär Vogel überspitzt kiöppen der Alte würfelt Würfel nicht bo "
 

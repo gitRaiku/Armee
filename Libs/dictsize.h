@@ -1,1 +1,1 @@
-#define STRINGS_SIZE 40054251
+#define STRINGS_SIZE 4

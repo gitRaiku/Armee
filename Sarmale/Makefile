@@ -63,6 +63,9 @@ logfile:
 install: logfile $(BIN_DIR)/$(TARGET)
 	cp -f $(BIN_DIR)/$(TARGET) /usr/local/bin/$(TARGET)
 
+uninstall:
+	rm /usr/local/bin/$(TARGET)
+
 run: build
 	./$(BIN_DIR)/$(TARGET)
 
